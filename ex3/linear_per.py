@@ -28,19 +28,74 @@ def calc_u (samples):
 def calc_w(c,u):
     c_inv = np.linalg.inv(c)
     return np.dot (c_inv,u)
+def calc_y(w,x_s):
+    return np.asarray([np.dot(w,x) for x in x_s])
+
+def calc_error (y0_s,y_s):
+    return (sum((y0_s-y_s)**2))/(2*len(y0_s))
+
+def simulate (start, end ,step,  iters):
+    training_errors = []
+    for size in range(start,end,step):
+        training_errors.append(0)
+    training_errors = np.asarray(training_errors,np.float64)
+    # print(training_errors)
+    # training_errors = np.zeros(len (training_errors))
+    # print(training_errors)
+
+    generalization_errors = np.zeros(len (training_errors))
+    for size in range(start,end,step):
+        for i in range (iters):
+            samples = rand_samples(size)
+            c = calculate_correlation_matrix(samples)
+            u = calc_u(samples)
+            w = calc_w(c, u)
+            y0_s = np.asarray([y0(x) for x in samples[:, 0]])
+            y_s = calc_y(w, samples)
+            training_error = calc_error(y0_s, y_s)
+            training_errors[size//step-1]+= training_error
+            all_range_samples = np.asarray([[x / 50, 1] for x in range(-50, 50, 1)])
+            y0_s = np.asarray([y0(x) for x in all_range_samples[:, 0]])
+            y_s = calc_y(w, all_range_samples)
+            generalization_error = calc_error(y0_s, y_s)
+            generalization_errors[size//step-1]+=generalization_error
+
+    return range(start,end,step),training_errors/iters,generalization_errors/iters
+
+
 
 samples = rand_samples(500)
 # print (a)
 c = calculate_correlation_matrix(samples)
+print ("c : \n",c)
 u = calc_u(samples)
 print ("u :\n", u)
 w = calc_w(c,u)
 print ("w :\n", w)
 
 y0_s = np.asarray([y0(x) for x in samples[:,0]])
-y_s = np.asarray([np.dot(w,x) for x in samples])
+y_s = calc_y(w,samples)
 plt.plot (samples[:,0], y_s, "r.")
+
 plt.plot (samples[:,0], y0_s, ".")
-
-
 plt.show()
+print ()
+
+# training error:
+training_error = calc_error(y0_s,y_s)
+print ("training error = " ,training_error)
+
+# generalization error
+all_range_samples = np.asarray([[x/50,1] for x in range (-50,50,1)])
+y0_s = np.asarray([y0(x) for x in all_range_samples[:,0]])
+y_s  = calc_y(w,all_range_samples)
+generalization_error = calc_error(y0_s,y_s)
+print ("generalization_error = ", generalization_error)
+
+samples_num ,training_errors,generalization_errors =  simulate(5,100,5,100)
+
+plt.plot(samples_num,training_errors,"r")
+plt.plot(samples_num,generalization_errors,"b")
+plt.show()
+
+
