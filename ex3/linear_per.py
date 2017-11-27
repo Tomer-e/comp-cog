@@ -75,9 +75,13 @@ print ("w :\n", w)
 
 y0_s = np.asarray([y0(x) for x in samples[:,0]])
 y_s = calc_y(w,samples)
-plt.plot (samples[:,0], y_s, "r.")
 
-plt.plot (samples[:,0], y0_s, ".")
+plt.title("y0 vs y")
+plt.plot (samples[:,0], y_s, "r.", label = "y")
+plt.plot (samples[:,0], y0_s, ".",label = "y0")
+plt.legend()
+plt.xlabel("x (-1,1)")
+plt.ylabel("y = x^3-x^2+x-1")
 plt.show()
 print ()
 
@@ -93,9 +97,12 @@ generalization_error = calc_error(y0_s,y_s)
 print ("generalization_error = ", generalization_error)
 
 samples_num ,training_errors,generalization_errors =  simulate(5,100,5,100)
-
-plt.plot(samples_num,training_errors,"r")
-plt.plot(samples_num,generalization_errors,"b")
+plt.title("<training error> vs <generalization error>" )
+plt.plot(samples_num,training_errors,"r",label = "training error")
+plt.plot(samples_num,generalization_errors,"b", label = "generalization error")
+plt.legend()
+plt.xlabel("num of samples")
+plt.ylabel("<error>")
 plt.show()
 
 
