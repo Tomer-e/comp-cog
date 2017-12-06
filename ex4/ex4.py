@@ -77,19 +77,24 @@ def net(ETA,num_of_neurons,iters):
         print ("Network output = ", (a*NUM_OF_LETTERS)[0][0].round(), "actual letter = ", i+1)
     return error
 
-def show_err(error):
-    plt.plot(range(len(error)),error)
+def show_err(error, eta, n_neurons, figure):
+    plt.figure(figure)
+    plt.plot(range(2000),error[0:2000])
+    title = "ETA = "+ str(eta)+ ", number of neurons = "+ str(n_neurons)
+    plt.title(title)
     plt.xlabel("Iter")
     plt.ylabel("Error")
-    plt.show()
+
 
 error1 = net(ETA_a,10,150000)
 error2 = net (ETA_b,10,150000)
 error3 = net(ETA_a,2,150000)
 
-show_err(error1)
-show_err(error2)
-show_err(error3)
+show_err(error1, ETA_a,10,1)
+show_err(error2,ETA_b,10,2)
+show_err(error3, ETA_a, 2,3)
+
+plt.show()
 # print (a)
 # print("delta_b_s: \n",delta_b_s)
 #
