@@ -34,10 +34,10 @@ def pi_func(C,v,nw):
     :param nw: Noise Width
     :return:
     """
-    return C *np.exp(-1/(nw**2)*np.cos((np.pi*v)/K))
+    return C *np.exp(1/(nw**2)*np.cos((np.pi*v)/K))
 
 def calc_C(k,nw):
-    return 1/sum ([np.exp (-1/(nw**2)*np.cos(np.pi*v/k)) for v in range (-k,k)])
+    return 1/sum ([np.exp (1/(nw**2)*np.cos(np.pi*v/k)) for v in range (-k,k)])
 
 def l(xn,prototypes):
     return np.argmin(abs(xn-prototypes))
@@ -74,14 +74,15 @@ def SOM (gen_rand_input,iters,eta,nw,k,times):
     C = calc_C(k,nw)
     for i in range (iters):
         input_neuron = gen_rand_input()
-        prototypes = update_prototypes(input_neuron, prototypes,eta,k,C,nw)
+        prototypes = update_prototypes(input_neuron, prototypes, eta, k, C, nw)
         if (i+1 in times):
             show_graphs(prototypes, i+1,nw,eta,k)
     return prototypes
 
-# SOM (gen_rand_inputA,ITERS,ETA,NW,K,[1,5000,10000,50000])
-#
-# SOM (gen_rand_inputB,ITERS,ETA,NW,K,[50000])
+SOM (gen_rand_inputA,ITERS,ETA,0.1,K,[1,5000,10000,50000])
+
+plt.title("using 2nd inputs function")
+SOM (gen_rand_inputB,ITERS,ETA,NW,K,[50000])
 
 for n in [0.1,0.2,0.3,0.4,0.6,0.7,0.8,0.9]:
     SOM (gen_rand_inputA,50000,ETA,n,K,[50000])
