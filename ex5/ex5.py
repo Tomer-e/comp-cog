@@ -79,15 +79,15 @@ def SOM (gen_rand_input,iters,eta,nw,k,times):
             show_graphs(prototypes, i+1,nw,eta,k)
     return prototypes
 
-SOM (gen_rand_inputA,ITERS,ETA,0.1,K,[1,5000,10000,50000])
+SOM (gen_rand_inputA,ITERS,ETA,0.1,K,[50000])
 
 plt.title("using 2nd inputs function")
-SOM (gen_rand_inputB,ITERS,ETA,NW,K,[50000])
-
-for n in [0.1,0.2,0.3,0.4,0.6,0.7,0.8,0.9]:
-    SOM (gen_rand_inputA,50000,ETA,n,K,[50000])
-
-
-
-
-
+# SOM (gen_rand_inputB,ITERS,ETA,NW,K,[50000])
+#
+# for n in [0.1,0.2,0.3,0.4,0.6,0.7,0.8,0.9]:
+#     SOM (gen_rand_inputA,50000,ETA,n,K,[50000])
+#
+#
+#
+#
+#
